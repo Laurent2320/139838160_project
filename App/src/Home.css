@@ -1,0 +1,47 @@
+/* Home.css */
+
+.home {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+min-height: 71vh; /* Set the height to 100% of the viewport height */
+width: 36%; /* Set the width to one-third of the viewport width */
+padding: 66px; /* Add padding for spacing */
+box-sizing: border-box;
+}
+
+.input-container {
+display: flex;
+flex-direction: column; /* Display labels and inputs in a column */
+align-items: center;
+justify-content: center;
+width: 300px; /* Adjust the width as needed */
+margin: 0 auto; /* Center the container horizontally */
+}
+
+.input-label {
+display: block;
+margin-bottom: 20px;
+font-size: 1.2rem;
+color: #333;
+}
+
+.input-field {
+padding: 8px;
+font-size: 1rem;
+}
+
+.predict-button {
+padding: 10px 20px;
+font-size: 1rem;
+background-color: #007bff;
+color: #fff;
+border: none;
+cursor: pointer;
+margin-top: 20px; /* Add some top margin for spacing */
+}
+
+.predict-button:hover {
+background-color: #0056b3;
+}

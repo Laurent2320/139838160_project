@@ -1,0 +1,29 @@
+.navbar {
+    background-color: #333;
+}
+  
+nav ul {
+    list-style: none;
+    padding: 1;
+    margin: 0;
+    display: flex;
+}
+
+nav li {
+    margin: 3px;
+    margin-right: 22px; /* Adjust the spacing between links */
+}
+  
+nav a {
+    text-decoration: none;
+    color: white;
+}
+  
+nav a:hover {
+    border-bottom: 2px solid white;
+}
+
+/* Style for the active link */
+nav a.active {
+    border-bottom: 2px solid white;
+}

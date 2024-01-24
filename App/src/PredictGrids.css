@@ -1,0 +1,62 @@
+/* PredictGrids.css */
+
+.predict-grids {
+    text-align: center;
+    min-height: 71vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.nbr_grid {
+    font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 2rem;
+    line-height: 2rem;
+}
+
+.grid-container {
+    min-height: 15vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; /* Center the grid vertically in the container */
+    /* flex-grow: 1; Allow the grid container to grow and take up the available space */
+}
+    
+.grid-row {
+    display: flex;
+    justify-content: center;
+    width: 100%; /* Each row takes the full width */
+}
+
+    /* Adjust the size of blue_bubble.png and yellow_star.png */
+.grid-row img{
+    width: 55px; /* Adjust the width as needed */
+    height: 55px; /* Adjust the height as needed */
+    border: none
+}
+
+.grid-cell {
+    position: relative;
+  }
+  
+  .number-overlay {
+    position: absolute;
+    top: 47%; /* Adjust the vertical position */
+    left: 49%; /* Adjust the horizontal position */
+    transform: translate(-50%, -50%); /* Center the overlay */
+    font-size: 22px; /* Adjust the font size */
+    color: black; /* Set the text color */
+    font-weight: bold;
+    /* z-index: 1; Ensure the number appears above the image */
+  }
+
+.space{
+    position: relative;
+    bottom:0;
+    height: 9vh;
+}
+
+.footer{
+    position: fixed;
+    bottom:1vh
+}
