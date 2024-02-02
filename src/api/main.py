@@ -1,38 +1,24 @@
 import os
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
-import tensorflow as tf
-from pydantic import BaseModel
-from unittest.mock import MagicMock
-from keras.models import load_model
-
-import requests
 import io
 import zipfile
+from typing import List
+
 import pandas as pd
 import numpy as np
-from typing import List  
 
+import requests
+from fastapi import FastAPI, HTTPException, staticfiles
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from keras.models import load_model
+import tensorflow as tf
 
 
 # import draws from module_lib
 
-# loading libraries
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from keras.models import load_model
-import requests
-import zipfile
-import io
-
 # Scrapping and loading model
 def scrap_fct(url):
-  # Scrapping file results from FDJ URL
-  # URL of the ZIP file
-
-
+ 
   # Send a GET request to the URL
   response = requests.get(url)
 
@@ -159,38 +145,32 @@ def draws(grids_nbr, rows_windows,model):
     df_extend = add_new_grids(df_ligth_rev, grids)
   return grids
 
-# # Parameters
-# grids_nbr = 3
-# windows = 12
-
-# # Load the model from the H5 file
-# model = load_model('test_valid_test_512_64_12_0.2.h5')
-
-# # Call main function
-# draws_pred = draws(grids_nbr, windows)
-# draws_pred
-
 # todo delete drown
 
 from google.cloud import storage
 
+
+path_key_file = "src/api/m-412710-b2b84652d635.json"
+path_data_folder = "src/api/static_data"
+
 def download_model_from_gcs(bucket_name, model_file_name):
     try:
+        print(os.getcwd())
+        print(path_key_file)
         # Initialize GCP Storage Client
-        client = storage.Client.from_service_account_json('src/api/m-412710-831f51af70d6.json')
+        client = storage.Client.from_service_account_json(path_key_file)
 
         # Specify GCP Storage Bucket and Model File Name
-        model_blob_path = f"gs://{bucket_name}/{model_file_name}"
+        # model_blob_path = f"gs://{bucket_name}/{model_file_name}"
 
         # Download Model from GCP Storage
         bucket = client.get_bucket(bucket_name)
         blob = bucket.blob(model_file_name)
-        blob.download_to_filename(f"src/api/{model_file_name}")
-
-        # Load the Model
-        # loaded_model = load_model(model_file_name)
-
-        # return loaded_model
+        path_model_file = f"{path_data_folder}/{model_file_name}"
+        blob.download_to_filename(path_model_file)
+        
+        print(path_model_file)
+        return path_model_file
 
     except Exception as e:
         raise Exception(e)
@@ -198,21 +178,19 @@ def download_model_from_gcs(bucket_name, model_file_name):
 
 
 app = FastAPI()
-# app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+# app.mount("/static_data", staticfiles.StaticFiles(directory="static_data"), name="static")
 
 # def load_files_on_startup():
-#     # Replace "static" with the name of your static folder
-#     static_folder_path = "static"
+#     # static_folder_path = "static_data"
+#     # bucket_name = "139m_model"
+#     # model_file_name = "test_valid_test_512_64_12_0.2.h5"
+#     # download_model_from_gcs(bucket_name,model_file_name)
+#   return 0
 
-#     # Your file loading logic here
-#     # For example, list all files in the static folder
-#     file_list = [f for f in os.listdir(static_folder_path) if os.path.isfile(os.path.join(static_folder_path, f))]
-    
-#     # Print the list of files for demonstration purposes
-#     print("Files loaded during app startup:", file_list)
-
-# # Register the on_startup event with the load_files_on_startup function
 # app.add_event_handler("startup", load_files_on_startup)
+
 
 
 class InputData(BaseModel):
@@ -223,12 +201,13 @@ class OutputData(BaseModel):
 
 @app.post("/generate_grids", response_model=OutputData)
 def generate_grids(data: InputData):
-    #todo add log
     try:
         bucket_name = "139m_model"
         model_file_name = "test_valid_test_512_64_12_0.2.h5"
-        download_model_from_gcs(bucket_name,model_file_name)
-        model = load_model(f"src/api/{model_file_name}")
+        path_model_file = download_model_from_gcs(bucket_name,model_file_name)
+      
+        # path_model_file = f"{path_data_folder}/test_valid_test_512_64_12_0.2.h5"
+        model = load_model(path_model_file)
         
         if model is None:
             raise HTTPException(status_code=500, detail="Model is not loaded.")
@@ -242,10 +221,8 @@ def generate_grids(data: InputData):
         selected_predictions_int = [[int(value) for value in sublist] for sublist in selected_predictions]
 
         return OutputData(list_1=selected_predictions_int)
-
-
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e) + os.getcwd())
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == '__main__':
