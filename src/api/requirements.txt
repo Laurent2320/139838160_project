@@ -68,6 +68,7 @@ pydantic_core==2.16.1
 Pygments==2.17.2
 pyparsing==3.1.1
 python-dateutil==2.8.2
+python-version==0.0.2
 pytz==2023.3.post1
 pyzmq==25.1.2
 requests==2.31.0

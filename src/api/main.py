@@ -150,8 +150,11 @@ def draws(grids_nbr, rows_windows,model):
 from google.cloud import storage
 
 
-path_key_file = "src/api/m-412710-b2b84652d635.json"
-path_data_folder = "src/api/static_data"
+# path_key_file = "src/api/m-412710-b2b84652d635.json"
+# path_data_folder = "src/api/static_data"
+
+path_key_file = "m-412710-b2b84652d635.json"
+path_data_folder = "static_data"
 
 def download_model_from_gcs(bucket_name, model_file_name):
     try:

@@ -1,0 +1,17 @@
+runtime: python310  # Specify the Python version you are using
+
+instance_class: F2  # Choose an appropriate instance class based on your application's requirements
+
+entrypoint: uvicorn main:app --host=0.0.0.0 --port=${PORT:-8080}  # Adjust the entrypoint command based on your FastAPI application setup
+
+env_variables:
+  VARIABLE_NAME: "variable_value"  # Add any environment variables your application requires
+
+automatic_scaling:
+  target_cpu_utilization: 0.65  # Adjust based on your application's resource needs
+
+handlers:
+- url: /.*
+  script: auto
+
+service: default  # Set the custom name for your service
