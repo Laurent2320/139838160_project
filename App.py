@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from keras.models import load_model
 import requests
-import zipfile
+# import zipfilepython -m venv .venv
 import io
 
-# Scrapping and loading model
+# Scrapping and loading modelexit
 def scrap_fct(url):
   # Scrapping file results from FDJ URL
   # URL of the ZIP file
