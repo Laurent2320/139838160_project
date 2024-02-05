@@ -51,10 +51,16 @@ const generateGrid = async (numberOfGrids) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-
     const data = await response.json();
     const resultList = data.list_1;
-    const grid = resultList.map(row => [...row]); // Ensure grid is an array
+    const grid = [];
+    for (const row of resultList) {
+      const newRow = [];
+      for (const item of row) {
+        newRow.push(item);
+      }
+      grid.push(newRow);
+    }
     console.log('Response:', data);
 
     return grid;
